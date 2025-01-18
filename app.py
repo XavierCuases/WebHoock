@@ -17,11 +17,6 @@ def validate_signature(payload, signature):
     ).hexdigest()
     return hmac.compare_digest(computed_signature, signature)
 
-# Ruta principal para verificar que el servidor está funcionando
-@app.route('/', methods=['GET'])
-def home():
-    return "El servidor Flask está funcionando correctamente", 200
-
 # Ruta para el webhook (POST)
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -46,14 +41,14 @@ def webhook():
         message = data.get("message")
         user_id = data.get("user_id")
 
-        # Registrar el evento recibido
-        app.logger.info(f"Evento recibido: {event}, Mensaje: {message}, Usuario: {user_id}")
-
-        return jsonify({"message": "Evento procesado correctamente"}), 200
+        # Devuelve directamente los datos recibidos
+        return jsonify({
+            "message": "Evento procesado correctamente",
+            "data_received": data
+        }), 200
     except Exception as e:
         app.logger.error(f"Error al procesar el evento: {e}")
         return jsonify({"error": "Error procesando el evento"}), 500
 
-# Iniciar el servidor Flask en el puerto 4000
 if __name__ == "__main__":
     app.run(port=4000, debug=True)
