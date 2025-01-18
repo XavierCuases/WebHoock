@@ -43,7 +43,7 @@ def webhook():
 
         # Devuelve directamente los datos recibidos
         return jsonify({
-            "message": "Evento procesado correctamente",
+            "message": "Evento esta procesado correctamente",
             "data_received": data
         }), 200
     except Exception as e:
